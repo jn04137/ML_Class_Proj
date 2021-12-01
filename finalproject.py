@@ -36,6 +36,7 @@ ok
 7:30-9:30am)
     I can really do this almost solo if you want I am typically pretty good at presentations
 
+testing the commit and push
     """
 import numpy as np
 from sklearn import preprocessing

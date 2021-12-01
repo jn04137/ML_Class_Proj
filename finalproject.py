@@ -55,7 +55,7 @@ def main():
     print("Hello World again")
     test_list = ["Atlanta", "NYC", "Atlanta", "Chicago"]
     # le.fit(test_list)
-    example_list = le.transform(test_list) # cannot get to work can try to figure out again
+    example_list = le.transform(test_list) # cannot get to work can try to figure out later
     print(*example_list)
 
     # le.classes_

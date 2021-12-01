@@ -43,11 +43,9 @@ from sklearn import preprocessing
 
 
 def main():
-    heist_data = np.genfromtxt('adult.data', delimiter=',', skip_header=1)
-    # print(heist_data)
-    print("Hello world!")
-    x = heist_data[:, 0:3]
-    y = heist_data[:, 13]
+    census_data = np.genfromtxt('adult.data', delimiter=',', skip_header=1)
+    x = census_data[:, 0:3]
+    y = census_data[:, 13]
     le = preprocessing.LabelEncoder()
     # le_X = preprocessing.LabelEncoder()
     # leY = preprocessing.LabelEncoder()

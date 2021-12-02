@@ -40,22 +40,26 @@ testing the commit and push
     """
 import numpy as np
 from sklearn import preprocessing
+from sklearn import linear_model
 
 
 def main():
     census_data = np.genfromtxt('adult.data', delimiter=',', skip_header=1)
-    x = census_data[:, 0:3]
-    y = census_data[:, 13]
+    x = census_data[:, 0:14]
+    y = census_data[:, 14]
+    lr = linear_model.LinearRegression()
     le = preprocessing.LabelEncoder()
     # le_X = preprocessing.LabelEncoder()
     # leY = preprocessing.LabelEncoder()
     # print(x)
     # print(y)
-    print("Hello World again")
-    test_list = ["Atlanta", "NYC", "Atlanta", "Chicago"]
-    # le.fit(test_list)
-    example_list = le.transform(test_list) # cannot get to work can try to figure out
-    print(*example_list)
+
+    le.fit(x)  # errors trying to fit x wants a 1d array
+    x = le.transform(x)
+    # capitalization does matter with .transform() so if there are capitalization inconsistencies we need to put
+    # everything in lowercase letters
+
+    print(x)
 
     # le.classes_
 

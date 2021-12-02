@@ -38,37 +38,42 @@ ok
 
 testing the commit and push
     """
->>>>>>> f96bf00aacc7a2d368add4588cfdac22714af5ae
 import numpy as np
+import pandas as pd
 from sklearn import preprocessing
 from sklearn import linear_model
 
-
-
 def main():
-    census_data = np.genfromtxt('adult.data', delimiter=',', skip_header=1)
-    x = census_data[:, 0:14]
-    y = census_data[:, 14]
-    lr = linear_model.LinearRegression()
-    le = preprocessing.LabelEncoder()
-    # le_X = preprocessing.LabelEncoder()
-    # leY = preprocessing.LabelEncoder()
-    # print(x)
-    # print(y)
 
-    le.fit(x)  # errors trying to fit x wants a 1d array
-    x = le.transform(x)
-    # capitalization does matter with .transform() so if there are capitalization inconsistencies we need to put
-    # everything in lowercase letters
+    label_encoder = preprocessing.LabelEncoder()
 
-    print(x)
+    column_labels = ['age', 'workclass', 'fnlwgt', 'education', 'education-num',
+                     'marital-status', 'occupation', 'relationship', 'race',
+                     'sex', 'capital-gain', 'capital-loss', 'hours-per-week',
+                     'native-country', 'income']
 
-    # le.classes_
+    census_data = pd.read_csv('adult.data', sep=',')
+    census_data.columns = column_labels
+    census_data['workclass'] = label_encoder.fit_transform(census_data['workclass'])
+    census_data['workclass'].unique()
+    census_data['education'] = label_encoder.fit_transform(census_data['education'])
+    census_data['education'].unique()
+    census_data['marital-status'] = label_encoder.fit_transform(census_data['marital-status'])
+    census_data['marital-status'].unique()
+    census_data['occupation'] = label_encoder.fit_transform(census_data['occupation'])
+    census_data['occupation'].unique()
+    census_data['relationship'] = label_encoder.fit_transform(census_data['relationship'])
+    census_data['relationship'].unique()
+    census_data['race'] = label_encoder.fit_transform(census_data['race'])
+    census_data['race'].unique()
+    census_data['sex'] = label_encoder.fit_transform(census_data['sex'])
+    census_data['sex'].unique()
+    census_data['native-country'] = label_encoder.fit_transform(census_data['native-country'])
+    census_data['native-country'].unique()
+    census_data['income'] = label_encoder.fit_transform(census_data['income'])
+    census_data['income'].unique()
+    print(census_data)
 
-    # le_X.fit(x)
-    # leY.fit(y)
-
-    # print(x)
 
 
 if __name__ == "__main__":

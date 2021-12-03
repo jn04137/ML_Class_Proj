@@ -43,7 +43,7 @@ import pandas as pd
 from sklearn import preprocessing
 from sklearn import linear_model
 from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split, cross_val_score
+# from sklearn.model_selection import train_train_split, cross_val_score
 from sklearn.naive_bayes import GaussianNB
 import matplotlib.pyplot as plt
 from sklearn.neural_network import MLPClassifier
@@ -67,36 +67,60 @@ def main():
         census_data[x] = label_encoder.fit_transform(census_data[x])
         census_data[x].unique()
 
+    census_train = pd.read_csv('adult.test', sep=',')
+    census_train.columns = column_labels
+
+    for x in labal_encoder_columns:
+        census_train[x] = label_encoder.fit_transform(census_train[x])
+        census_train[x].unique()
+
     census_array = census_data.to_numpy()
+    census_data_array = census_train.to_numpy()
 
     X = census_array[:, :14]
     y = census_array[:, 14]
+    X_train = census_array[:, :14]
+    y_train = census_array[:, 14]
 
     # play with alphas and test_sizes
-    scaler = preprocessing.StandardScaler().fit(X)
-    X = scaler.transform(X)
+    scalerX = preprocessing.StandardScaler().fit(X)
+    X = scalerX.transform(X)
 
-    x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
-    vals = list(range(7, 12))
+    scaler_train = preprocessing.StandardScaler().fit(X_train)
+    X_train = scaler_train.transform(X_train)
+
+    # x_tra1in, x_test, y_tra1in, y_test = train_t1est_split(X, y, test_size=0.33, random_state=1)
+    # above was used for testing on the data set not needed when testing dataset
+
+    vals = list(range(5, 50))
     train = []
     test = []
-    """
-    for n in vals:
-        mlp1 = MLPClassifier(hidden_layer_sizes=n, max_iter=2000, random_state=1).fit(x_train, y_train)
 
-        train.append(mlp1.score(x_train, y_train))
-        test.append(mlp1.score(x_test, y_test))
+    for n in vals:
+        mlp1 = MLPClassifier(hidden_layer_sizes=n, max_iter=2000, random_state=1).fit(X_train, y_train) # x_train
+        train.append(mlp1.score(X_train, y_train))
+        # change to (x_train, y_train) when using only .dataset and
+        # change to (X_train, y_train when using the .test data
+
+        test.append(mlp1.score(X, y))
+        # change to (x_test, y_test when using only .data dataset and
+        # change to (X, y) when using the .test data
+
+
     plt.plot(vals, train, label='train')
     plt.plot(vals, test, label='test')
     plt.legend()
     plt.show()
-    """
+
     # optimal HLS is 10
     """
+        USING ONLY DATA SET
         set hidden layer size to 10
         find the optimal alpha value
+        
+        USING TEST AND DATA SET
     """
-
+    """
     alphas = np.linspace(.005, 0.1, 50)
     scores = []
     for a in alphas:
@@ -105,7 +129,8 @@ def main():
         scores.append(temp.mean())
     plt.plot(alphas, scores)
     plt.show()
-    # optimal point is 0.0398 about
+    # TEST ONLY optimal point is 0.0398 about
+    """
 
 
 if __name__ == "__main__":

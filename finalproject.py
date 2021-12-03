@@ -42,11 +42,14 @@ import numpy as np
 import pandas as pd
 from sklearn import preprocessing
 from sklearn import linear_model
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.naive_bayes import GaussianNB
-from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+from sklearn.neural_network import MLPClassifier
+
 
 def main():
-
     label_encoder = preprocessing.LabelEncoder()
 
     column_labels = ['age', 'workclass', 'fnlwgt', 'education', 'education-num',
@@ -65,41 +68,46 @@ def main():
     for x in label_encoder_columns:
         census_data[x] = label_encoder.fit_transform(census_data[x])
         census_data[x].unique()
-    """
-    census_data['workclass'] = label_encoder.fit_transform(census_data['workclass'])
-    census_data['workclass'].unique()
-    census_data['education'] = label_encoder.fit_transform(census_data['education'])
-    census_data['education'].unique()
-    census_data['marital-status'] = label_encoder.fit_transform(census_data['marital-status'])
-    census_data['marital-status'].unique()
-    census_data['occupation'] = label_encoder.fit_transform(census_data['occupation'])
-    census_data['occupation'].unique()
-    census_data['relationship'] = label_encoder.fit_transform(census_data['relationship'])
-    census_data['relationship'].unique()
-    census_data['race'] = label_encoder.fit_transform(census_data['race'])
-    census_data['race'].unique()
-    census_data['sex'] = label_encoder.fit_transform(census_data['sex'])
-    census_data['sex'].unique()
-    census_data['native-country'] = label_encoder.fit_transform(census_data['native-country'])
-    census_data['native-country'].unique()
-    census_data['income'] = label_encoder.fit_transform(census_data['income'])
-    census_data['income'].unique()
-    """
 
     census_array = census_data.to_numpy()
 
     X = census_array[:, :14]
     y = census_array[:, 14]
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
-    gnb = GaussianNB()
-    y_pred = gnb.fit(X_train, y_train).predict(X_test)
+    # play with alphas and test_sizes
+    scaler = preprocessing.StandardScaler().fit(X)
+    X = scaler.transform(X)
 
-    print("Number of mislabeled points out of a total %d points: %d"
-    % (X_test.shape[0], (y_test != y_pred).sum()))
-    print(census_array)
-    print(label_encoder.inverse_transform([1]))
+    x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
+    vals = list(range(7, 12))
+    train = []
+    test = []
+    """
+    for n in vals:
+        mlp1 = MLPClassifier(hidden_layer_sizes=n, max_iter=2000, random_state=1).fit(x_train, y_train)
 
+        train.append(mlp1.score(x_train, y_train))
+        test.append(mlp1.score(x_test, y_test))
+    plt.plot(vals, train, label='train')
+    plt.plot(vals, test, label='test')
+    plt.legend()
+    plt.show()
+    """
+    # optimal HLS is 10
+    """
+        set hidden layer size to 10
+        find the optimal alpha value
+    """
+
+    alphas = np.linspace(.005, 0.1, 50)
+    scores = []
+    for a in alphas:
+        mlp2 = MLPClassifier(hidden_layer_sizes=10, max_iter=3000, alpha=a, random_state=1).fit(X, y)
+        temp = cross_val_score(mlp2, X, y)
+        scores.append(temp.mean())
+    plt.plot(alphas, scores)
+    plt.show()
+    # optimal point is 0.0398 about
 
 
 if __name__ == "__main__":

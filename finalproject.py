@@ -43,6 +43,7 @@ import pandas as pd
 from sklearn import preprocessing
 from sklearn import linear_model
 from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split
 
 def main():
 
@@ -79,7 +80,14 @@ def main():
     X = census_array[:, :14]
     y = census_array[:, 14]
 
-    print(y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
+    gnb = GaussianNB()
+    y_pred = gnb.fit(X_train, y_train).predict(X_test)
+
+    print("Number of mislabeled points out of a total %d points: %d"
+    % (X_test.shape[0], (y_test != y_pred).sum()))
+    print(census_array)
+    print(label_encoder.inverse_transform([1]))
 
 
 

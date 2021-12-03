@@ -1,0 +1,17 @@
+#+AUTHOR: Jonathan Nguyen & Austin Porter
+
+* Notes
+
+** GaussianNB
+
+*** Var-Smoothing
++ At the default value using the cross_val_method, the GaussianNB model results in a mean score of 0.795
+
+*** Cross_Val_Score
+- the parameter n_jobs can be set to -1 to utilize all processor cores on the computer. This should speed up models such as 'leave-one-out'.
+
+*** Things that need to be done
+
+**** TODO Test for optimal var_smoothing value
++ The value ending up being 1e-5. This value ended up giving the best cross validation score of around 0.805
+

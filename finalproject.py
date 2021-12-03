@@ -54,13 +54,15 @@ def main():
                      'sex', 'capital-gain', 'capital-loss', 'hours-per-week',
                      'native-country', 'income']
 
-    labal_encoder_columns = ['workclass', 'education', 'marital-status', 'occupation',
+    label_encoder_columns = ['workclass', 'education', 'marital-status', 'occupation',
                              'relationship', 'race', 'sex', 'native-country', 'income']
 
     census_data = pd.read_csv('adult.data', sep=',')
     census_data.columns = column_labels
 
-    for x in labal_encoder_columns:
+    # The following will use label_encoder only on columns that contain strings as values
+
+    for x in label_encoder_columns:
         census_data[x] = label_encoder.fit_transform(census_data[x])
         census_data[x].unique()
     """

@@ -42,6 +42,7 @@ import numpy as np
 import pandas as pd
 from sklearn import preprocessing
 from sklearn import linear_model
+from sklearn.naive_bayes import GaussianNB
 
 def main():
 
@@ -72,7 +73,13 @@ def main():
     census_data['native-country'].unique()
     census_data['income'] = label_encoder.fit_transform(census_data['income'])
     census_data['income'].unique()
-    print(census_data)
+
+    census_array = census_data.to_numpy()
+
+    X = census_array[:, :14]
+    y = census_array[:, 14]
+
+    print(y)
 
 
 

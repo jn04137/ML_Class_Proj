@@ -43,7 +43,7 @@ import pandas as pd
 from sklearn import preprocessing
 from sklearn import linear_model
 from sklearn.linear_model import LinearRegression
-# from sklearn.model_selection import train_train_split, cross_val_score
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.naive_bayes import GaussianNB
 import matplotlib.pyplot as plt
 from sklearn.neural_network import MLPClassifier
@@ -67,7 +67,7 @@ def main():
         census_data[x] = label_encoder.fit_transform(census_data[x])
         census_data[x].unique()
 
-    census_train = pd.read_csv('adult.test', sep=',')
+    census_train = pd.read_csv('adult.test', sep=',', skiprows=1)
     census_train.columns = column_labels
 
     for x in labal_encoder_columns:
@@ -92,10 +92,10 @@ def main():
     # x_tra1in, x_test, y_tra1in, y_test = train_t1est_split(X, y, test_size=0.33, random_state=1)
     # above was used for testing on the data set not needed when testing dataset
 
-    vals = list(range(5, 50))
+    vals = list(range(90, 135))
     train = []
     test = []
-
+    """
     for n in vals:
         mlp1 = MLPClassifier(hidden_layer_sizes=n, max_iter=2000, random_state=1).fit(X_train, y_train) # x_train
         train.append(mlp1.score(X_train, y_train))
@@ -111,7 +111,7 @@ def main():
     plt.plot(vals, test, label='test')
     plt.legend()
     plt.show()
-
+    """
     # optimal HLS is 10
     """
         USING ONLY DATA SET
@@ -119,18 +119,19 @@ def main():
         find the optimal alpha value
         
         USING TEST AND DATA SET
+        hidden layer is 129
     """
-    """
-    alphas = np.linspace(.005, 0.1, 50)
+
+    alphas = np.linspace(.1, 20, 75)
     scores = []
     for a in alphas:
-        mlp2 = MLPClassifier(hidden_layer_sizes=10, max_iter=3000, alpha=a, random_state=1).fit(X, y)
+        mlp2 = MLPClassifier(hidden_layer_sizes=129, max_iter=3000, alpha=a, random_state=1).fit(X, y)
         temp = cross_val_score(mlp2, X, y)
         scores.append(temp.mean())
     plt.plot(alphas, scores)
     plt.show()
     # TEST ONLY optimal point is 0.0398 about
-    """
+
 
 
 if __name__ == "__main__":

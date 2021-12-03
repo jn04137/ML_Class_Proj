@@ -53,8 +53,16 @@ def main():
                      'sex', 'capital-gain', 'capital-loss', 'hours-per-week',
                      'native-country', 'income']
 
+    labal_encoder_columns = ['workclass', 'education', 'marital-status', 'occupation',
+                             'relationship', 'race', 'sex', 'native-country', 'income']
+
     census_data = pd.read_csv('adult.data', sep=',')
     census_data.columns = column_labels
+
+    for x in labal_encoder_columns:
+        census_data[x] = label_encoder.fit_transform(census_data[x])
+        census_data[x].unique()
+    """
     census_data['workclass'] = label_encoder.fit_transform(census_data['workclass'])
     census_data['workclass'].unique()
     census_data['education'] = label_encoder.fit_transform(census_data['education'])
@@ -73,6 +81,7 @@ def main():
     census_data['native-country'].unique()
     census_data['income'] = label_encoder.fit_transform(census_data['income'])
     census_data['income'].unique()
+    """
 
     census_array = census_data.to_numpy()
 

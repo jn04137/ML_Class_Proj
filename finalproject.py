@@ -40,8 +40,8 @@ def main():
 
     X = census_array[:, :14]
     y = census_array[:, 14]
-    X_train = census_array[:, :14]
-    y_train = census_array[:, 14]
+    X_train = census_data_array[:, :14]
+    y_train = census_data_array[:, 14]
     """
     # did not work
     rand_state = 101
@@ -72,10 +72,10 @@ def main():
     # x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
     # above was used for testing on the data set not needed when testing dataset
 
-    vals = list(range(90, 135))
+    vals = list(range(15, 35))
     train = []
     test = []
-
+    """
     for n in vals:
         mlp1 = MLPClassifier(hidden_layer_sizes=n, max_iter=2000, random_state=1).fit(X_train, y_train)  # x_train
         train.append(mlp1.score(X_train, y_train))
@@ -90,15 +90,16 @@ def main():
     plt.plot(vals, test, label='test')
     plt.legend()
     plt.show()
-
-    alphas = np.linspace(.001, 0.01, 50)
+    """
+    alphas = np.linspace(.0001, 0.01, 80)
     scores = []
     for a in alphas:
-        mlp2 = MLPClassifier(hidden_layer_sizes=129, max_iter=3000, alpha=a, random_state=1).fit(X, y)
+        mlp2 = MLPClassifier(hidden_layer_sizes=33, max_iter=3000, alpha=a, random_state=1).fit(X, y)
         temp = cross_val_score(mlp2, X, y)
         scores.append(temp.mean())
     plt.plot(alphas, scores)
     plt.show()
+
 
     """
         USING ONLY DATA SET
@@ -106,8 +107,8 @@ def main():
         optimal alpha value is 0.0398 with 85 percent accuracy
 
         USING TEST AND DATA SET
-        hidden layer is 129
-        optimal alpha value is 0.0449 85 percent accurate
+        hidden layer is 33
+        optimal alpha value is 0.00335 85 percent accurate
     """
 
 

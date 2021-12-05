@@ -1,0 +1,8 @@
+1. Linear Regression - how it didnt work
+	Due to the nature of LR
+	We had a binary problem and LR is suppose to work across a range of Ys
+4. MLP Classiffier (nuernal network) - 85
+	We did with and without the testing set and it was the same outcome just a different path to get there
+
+2. Gausian Naive bays - 81-82
+3. Support Vector Machine SVM - 81--82

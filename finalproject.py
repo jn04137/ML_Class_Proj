@@ -122,7 +122,7 @@ def main():
         hidden layer is 129
     """
 
-    alphas = np.linspace(.1, 20, 75)
+    alphas = np.linspace(.001, 0.01, 50)
     scores = []
     for a in alphas:
         mlp2 = MLPClassifier(hidden_layer_sizes=129, max_iter=3000, alpha=a, random_state=1).fit(X, y)

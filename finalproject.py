@@ -81,7 +81,26 @@ def main():
     y = census_array[:, 14]
     X_train = census_array[:, :14]
     y_train = census_array[:, 14]
+    """ did not work
+    rand_state = 101
+    lr = LinearRegression()
+    data = np.zeros((rand_state, 3))
+    for k in range(rand_state):
+        lrX_train, lrX_test, lrY_train, lrY_test = train_test_split(X, y, test_size=0.20, random_state=k)
+        lr.fit(lrX_train, lrY_train)
 
+        test_score = lr.score(lrX_test, lrY_test)
+        train_score = lr.score(lrX_train, lrY_train)
+
+        data[k][0] = k
+        data[k][1] = test_score
+        data[k][2] = train_score
+    print(data)
+    plt.plot(data[:, 0], data[:, 1], label="test")
+    plt.plot(data[:, 0], data[:, 2], label="train")
+    plt.legend()
+    plt.show()
+    """
     # play with alphas and test_sizes
     scalerX = preprocessing.StandardScaler().fit(X)
     X = scalerX.transform(X)
@@ -95,9 +114,9 @@ def main():
     vals = list(range(90, 135))
     train = []
     test = []
-    """
+
     for n in vals:
-        mlp1 = MLPClassifier(hidden_layer_sizes=n, max_iter=2000, random_state=1).fit(X_train, y_train) # x_train
+        mlp1 = MLPClassifier(hidden_layer_sizes=n, max_iter=2000, random_state=1).fit(X_train, y_train)  # x_train
         train.append(mlp1.score(X_train, y_train))
         # change to (x_train, y_train) when using only .dataset and
         # change to (X_train, y_train when using the .test data
@@ -106,21 +125,12 @@ def main():
         # change to (x_test, y_test when using only .data dataset and
         # change to (X, y) when using the .test data
 
-
     plt.plot(vals, train, label='train')
     plt.plot(vals, test, label='test')
     plt.legend()
     plt.show()
-    """
+
     # optimal HLS is 10
-    """
-        USING ONLY DATA SET
-        set hidden layer size to 10
-        find the optimal alpha value
-        
-        USING TEST AND DATA SET
-        hidden layer is 129
-    """
 
     alphas = np.linspace(.001, 0.01, 50)
     scores = []
@@ -130,8 +140,16 @@ def main():
         scores.append(temp.mean())
     plt.plot(alphas, scores)
     plt.show()
-    # TEST ONLY optimal point is 0.0398 about
 
+    """
+        USING ONLY DATA SET
+        set hidden layer size to 10
+        optimal alpha value is 0.0398 with 85 percent accuracy
+
+        USING TEST AND DATA SET
+        hidden layer is 129
+        optimal alpha value is 0.0449 85 percent accurate
+    """
 
 
 if __name__ == "__main__":

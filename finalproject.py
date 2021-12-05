@@ -75,7 +75,7 @@ def main():
     vals = list(range(15, 35))
     train = []
     test = []
-    """
+
     for n in vals:
         mlp1 = MLPClassifier(hidden_layer_sizes=n, max_iter=2000, random_state=1).fit(X_train, y_train)  # x_train
         train.append(mlp1.score(X_train, y_train))
@@ -90,7 +90,7 @@ def main():
     plt.plot(vals, test, label='test')
     plt.legend()
     plt.show()
-    """
+
     alphas = np.linspace(.0001, 0.01, 80)
     scores = []
     for a in alphas:

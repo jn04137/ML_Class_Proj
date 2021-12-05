@@ -1,0 +1,15 @@
+          Features         Score
+10    capital-gain  8.219773e+07
+11    capital-loss  1.372049e+06
+2           fnlwgt  1.718124e+05
+0              age  8.600737e+03
+12  hours-per-week  6.476435e+03
+7     relationship  3.659284e+03
+4    education-num  2.401748e+03
+5   marital-status  1.123319e+03
+6       occupation  5.042459e+02
+9              sex  5.025085e+02
+3        education  2.979004e+02
+1        workclass  4.757828e+01
+8             race  3.303798e+01
+13  native-country  1.362809e+01

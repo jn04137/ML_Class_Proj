@@ -42,7 +42,7 @@ def main():
     feature_scores = pd.concat([dfcolumns, dfscores], axis=1)
     feature_scores.columns = ['Features', 'Score']
 
-    print(feature_scores.nlargest(8, 'Score'))
+    print(feature_scores.nlargest(14, 'Score'))
 
 
 if __name__ == "__main__":

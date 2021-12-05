@@ -2,19 +2,15 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import preprocessing
-from sklearn import svm
+# Got tired of processing times and
+# found modules that support GPU acceleration
+from thundersvm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 
 def main():
 
-    '''
-    As mentioned in sklearn documentation, 5 or 10 cross fold validation is
-    preferred to leave one out.
-    '''
-
-    kf = KFold(n_splits=5)
 
     label_encoder = preprocessing.LabelEncoder()
     standard_scaler = preprocessing.StandardScaler()
@@ -27,6 +23,7 @@ def main():
     label_encoder_columns = ['workclass', 'education', 'marital-status', 'occupation',
                              'relationship', 'race', 'sex', 'native-country', 'income']
 
+    # feature_scoring results suggest that we should exclude age and workclass first
     census_data = pd.read_csv('adult.data', sep=',')
     census_data.columns = column_labels
 
@@ -36,10 +33,18 @@ def main():
         census_data[x] = label_encoder.fit_transform(census_data[x])
         census_data[x].unique()
 
+
+    census_data = census_data.drop(columns='native-country')
+    census_data = census_data.drop(columns='race')
+    census_data = census_data.drop(columns='workclass')
+    print(census_data)
     census_array = census_data.to_numpy()
 
-    X = census_array[:, :14]
-    y = census_array[:, 14]
+    X = census_array[:, :11]
+    y = census_array[:, 11]
+    print(census_array)
+    print(X)
+    print(y)
 
     standard_scaler.fit(X, y)
     X = standard_scaler.transform(X)
@@ -60,26 +65,57 @@ def main():
 
     # The following was used to find an adequate max_iter value
     # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
-    # clf = svm.SVC(kernel='linear', C=1, max_iter=600000).fit(X_train, y_train)
+    # clf = svm.SVC(kernel='linear', C=1).fit(X_train, y_train)
     # print("This is the score for the svm: " + str(clf.score(X_test, y_test)))
+
     scores = []
-    c_values = np.linspace(4.0, 4.9, 51)
+    c_values = np.linspace(0.01, 1.0, 101)
     count=0
+
+    '''
+    As mentioned in sklearn documentation, 5 or 10 cross fold validation is
+    preferred to leave one out.
+    '''
 
     '''
     Ran into convergence warnings before removing certain features with
     max_iter set to 2,000,000.
+
+    No convergence warnings after removing the age column.
+
+    Removing age and workclass reduces accuracy to 0.467
     '''
+
+    ''' The following was used to find the optimal c value which is 0.09 '''
+
     # for c in c_values:
-    #     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
-    #     clf = svm.SVC(kernel='linear', C=c, max_iter=2000000)
+    #     clf = SVC(kernel='linear', C=c)
     #     print("The current count: " + str(count))
     #     count += 1 # counter for current progress
-    #     scores.append(cross_val_score(clf, X, y, n_jobs= 14, cv=kf).mean())
+    #     # scores.append(cross_val_score(clf, X, y, n_jobs= 14, cv=kf).mean())
+    #     scores.append(cross_val_score(clf, X, y, n_jobs= 14, cv=5).mean())
 
-    plt.plot(c_values, scores)
-    plt.xlabel('c_values')
-    plt.ylabel('scores')
+    # plt.plot(c_values, scores)
+    # plt.xlabel('c_values')
+    # plt.ylabel('scores')
+    # plt.show()
+
+    train_scores = []
+    test_scores = []
+    clf = SVC(kernel='linear', C=0.09)
+    r_state = range(0, 100)
+    for r in r_state:
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=r)
+        clf.fit(X_train, y_train)
+        train_scores.append(clf.score(X_train, y_train))
+        test_scores.append(clf.score(X_test, y_test))
+        
+
+    plt.plot(r_state, test_scores, label='test_scores')
+    plt.plot(r_state, train_scores, label='train_scores')
+    plt.xlabel('random_state')
+    plt.xlabel('scores')
+    plt.legend()
     plt.show()
 
 if __name__ == "__main__":

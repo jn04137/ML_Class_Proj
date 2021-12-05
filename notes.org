@@ -12,11 +12,23 @@
 
 *** Things that need to be done
 
-**** TODO Test for optimal var_smoothing value
+**** DONE Test for optimal var_smoothing value
+CLOSED: [2021-12-05 Sun 01:36]
 + The value ending up being 1e-5. This value ended up giving the best cross validation score of around 0.805
 
 ** SVC
++ Will potentially make use of the LinearSVC model because it is recommended on the documentation that LinearSVC should be used on datasets >10,000 records over SVC and no changes to max_iter.
++ After removing the 'native-country' column, we found optimal c_value at 0.090, 0.131, and 0.149
 
+*** Test_Scores vs. Train_Scores (no native-country)
++ The lines for test_scores and train_scores are fairly consistent using random states from 0 to 100. One thing to note, the test_score line has much higher high's and lower low's when compared to the train_score line.
+
+** Processing
++ We directed the results of the predictive scoring in featurescoring.txt
++ We began by removing age and workclass while testing the SVC. The starting score was about 80%. After removing just age we scored 89% with the default configuration of SVC without any convergence warnings. It seems as though the age was stopping SVC from converging. (THIS IS WRONG)
++ I made a mistake, age has a strong relationship with the outcome. Removing age and workclass greatly affected the accuracy of the model because they have a significant relationship with the outcome.
+  
 ** General Notes
 + We decided to remove some features after scoring for predictive impact. It was after getting the max_iter on SVC to 2,000,000 and still receiving convergence warnings that made us set out for other solutions.
-
++ To speed up cross_val_score, we used the parameter n_jobs to allow python to use more threads.
++ For additional processing speeds, we explored using rapids.ai's cuML and thundersvm which utilize gpu performance.

@@ -108,7 +108,7 @@ def main():
     scaler_train = preprocessing.StandardScaler().fit(X_train)
     X_train = scaler_train.transform(X_train)
 
-    # x_tra1in, x_test, y_tra1in, y_test = train_t1est_split(X, y, test_size=0.33, random_state=1)
+    # x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
     # above was used for testing on the data set not needed when testing dataset
 
     vals = list(range(90, 135))

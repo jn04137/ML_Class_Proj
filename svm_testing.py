@@ -4,13 +4,15 @@ import matplotlib.pyplot as plt
 from sklearn import preprocessing
 # Got tired of processing times and
 # found modules that support GPU acceleration
-from thundersvm import SVC
+# from thundersvm import SVC
+from sklearn import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 
 def main():
 
+    # kf = KFold(n_splits=10)
 
     label_encoder = preprocessing.LabelEncoder()
     standard_scaler = preprocessing.StandardScaler()
